@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+import { ThemeProvider } from "@/components/provider/theme-provider";
+import { cn } from "@/lib/utils";
 
 export const montserrat = Montserrat({
   style: ["normal", "italic"],
@@ -22,8 +24,19 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={montserrat.className}>{children}</body>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={cn(montserrat.className, "bg-white dark:bg-[#313131]")}
+        >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem={false}
+            storageKey="opencord-theme"
+          >
+            {children}
+          </ThemeProvider>
+        </body>
       </html>
     </ClerkProvider>
   );
